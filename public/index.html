@@ -1,0 +1,177 @@
+<!--
+The Scenario
+
+A new local clinic, "VitalSigns Medical Center," needs a digital way to register new patients. Your job is to build the Patient Intake Form and a Mini-Server to receive and log that data.
+Part 1: Setup & Repository
+
+    GitHub: Create a new public repository named vitalsigns-intake-form.
+
+    Local Setup: Clone the repo to your machine.
+
+    Initialize: Open your terminal in the folder and run npm init -y.
+
+    Install Dependencies: Install the necessary packages:
+
+    npm install express cors
+
+    File Structure: Create the following files:
+
+        server.js (Your Node.js backend)
+
+        public/index.html (Your form)
+
+        public/style.css (Your design)
+
+        public/app.js (Your frontend logic)
+
+Part 2: The HTML Form (Frontend)
+
+Your form must be semantic and include the following "Patient Data" fields. Use proper <label> tags and id attributes.
+Field 	Input Type 	Attributes
+Full Name 	text 	required, placeholder
+Email 	email 	required
+Password 	password 	minlength="8" (For their portal account)
+Date of Birth 	date 	required
+Height (cm) 	number 	min="30", max="250"
+Gender 	radio 	(Male / Female / Other)
+Blood Type 	select 	(A+, O-, etc.)
+Medical History 	textarea 	placeholder (e.g., allergies)
+Consent 	checkbox 	required (Accept terms)
+
+    Remember: Apply CSS Specificity rules to style your form. Use a mix of element selectors, classes, and ID selectors to demonstrate your knowledge
+
+Part 3: The Backend (Express)
+
+In your server.js, set up a basic Express server (use the techstore as an example).
+
+    Configure cors and express.json().
+
+    Serve your static files from the public folder.
+
+    Create the Endpoint: Create a POST route to receive the data.
+    JavaScript
+
+    // Example hint:
+    app.post('/api/register-patient', (req, res) => {
+        const patientData = req.body;
+        console.log("New Patient Received:", patientData);
+        res.status(200).send({ message: "Registration successful!" });
+    });
+
+Part 4: Connecting the Dots (The Fetch)
+
+In your app.js, intercept the form submission.
+
+    Use event.preventDefault() to stop the page from refreshing.
+
+    Gather the data using new FormData(event.target) or by selecting individual inputs.
+
+    Use the Fetch API to send a POST request to your /api/register-patient endpoint.
+
+    Show an alert() to the user when the server responds.
+
+Hints
+
+Hint 1: Extracting Data Use FormData to grab all inputs at once. Requirement: Every input must have a name attribute.
+const formData = new FormData(event.target);
+const data = Object.fromEntries(formData.entries());
+
+Hint 2:  The Fetch Request The code that sends data to your Express endpoint.
+const response = await fetch('/api/register-patient', {
+
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data) // Converts JS object to string
+});
+
+Hint 3. Handling the Response Turn the server's reply into a readable object.
+
+const result = await response.json();
+alert(result.message);
+
+Part 5: Deployment
+
+    Prepare for Production
+
+    Deploy: Upload your project to Render or Railway.
+
+    Test: Submit a real entry on the live URL and check your deployment logs to see the console.log output!
+-->
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitalSigns</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="header">
+        <h1><b>VitalSigns Medical Center - Patient Intake Form</b></h1>
+    </div>
+    <div class="form-container">
+        <div class="ad-container" id="ad1">
+            <p>Ad 1. <b>Too much space</b>
+            </p>
+        </div>
+        <form id="patient-form">
+            <div class="form-group">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" required placeholder="e.g., Huitzilopochtli Diaz de la Vega">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" minlength="8">
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+            <div class="form-group">
+                <label for="height">Height (cm):</label>
+                <input type="number" id="height" name="height" min="30" max="250">
+            </div>
+            <div class="form-group">
+                <label>Gender:</label>
+                <label><input type="radio" name="gender" value="Male"> Male</label>
+                <label><input type="radio" name="gender" value="Female"> Female</label>
+                <label><input type="radio" name="gender" value="Other"> Other</label>
+            </div>
+            <div>
+                <label for="bloodType">Blood Type:</label>
+                <select id="bloodType" name="bloodType">
+                    <option value="">Select</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="medicalHistory">Medical History:</label>
+                <textarea id="medicalHistory" name="medicalHistory" placeholder="e.g., allergies"></textarea>
+            </div>
+            <div>
+                <label><input type="checkbox" name="consent" required> I accept the terms and conditions</label>
+            </div>
+        <button type="submit">Submit</button>
+        </form>
+        <div class="ad-container" id="ad2">
+            <p><b>to be left unused :) </b>Ad 2.</p>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
